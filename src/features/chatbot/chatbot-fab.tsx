@@ -2,12 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -104,73 +98,76 @@ export function ChatbotFab() {
         Chat
       </Button>
 
-      <Sheet open={open} onOpenChange={setOpen} modal="trap-focus">
-        <SheetContent
-          side="right"
-          className="w-[min(92vw,360px)] p-0 sm:w-[360px]"
-        >
-          <div className="flex h-full min-h-0 flex-col">
-            <SheetHeader className="border-b border-white/10 px-4 py-3 text-left">
-              <SheetTitle className="text-base">Chat with PurvaBot</SheetTitle>
-            </SheetHeader>
+      {open ? (
+        <div className="fixed bottom-20 right-5 z-50 flex h-[min(70vh,540px)] w-[min(calc(100vw-2.5rem),400px)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-background/95 shadow-2xl backdrop-blur">
+          <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 text-left">
+            <h3 className="text-base font-semibold">Chat with PurvaBot</h3>
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-8 rounded-full px-3"
+              onClick={() => setOpen(false)}
+            >
+              Close
+            </Button>
+          </div>
 
-            <ScrollArea className="min-h-0 flex-1 px-4 py-3">
-              <div className="space-y-3">
-                {messages.map((m, idx) => (
-                  <div
-                    key={idx}
-                    className={cn(
-                      "max-w-[88%] rounded-2xl px-3 py-2 text-sm leading-6",
-                      m.role === "user"
-                        ? "ml-auto bg-gradient-to-r from-fuchsia-500/25 via-indigo-500/20 to-sky-400/20 text-foreground border border-white/10"
-                        : "mr-auto bg-white/5 text-foreground/90 border border-white/10"
-                    )}
-                  >
-                    {m.content}
-                  </div>
-                ))}
-                <div ref={bottomRef} />
-              </div>
-            </ScrollArea>
-
-            <div className="border-t border-white/10 px-4 py-3">
-              <div className="mb-2 flex flex-wrap gap-1.5">
-                {quickPrompts.map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setDraft(p)}
-                    className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Input
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Ask about projects, experience, skills..."
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      void send();
-                    }
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={() => void send()}
-                  disabled={busy || !draft.trim()}
-                  className="h-10 rounded-full px-4"
+          <ScrollArea className="min-h-0 flex-1 px-4 py-3">
+            <div className="space-y-3">
+              {messages.map((m, idx) => (
+                <div
+                  key={idx}
+                  className={cn(
+                    "max-w-[88%] rounded-2xl px-3 py-2 text-sm leading-6",
+                    m.role === "user"
+                      ? "ml-auto bg-gradient-to-r from-fuchsia-500/25 via-indigo-500/20 to-sky-400/20 text-foreground border border-white/10"
+                      : "mr-auto bg-white/5 text-foreground/90 border border-white/10"
+                  )}
                 >
-                  {busy ? "..." : "Send"}
-                </Button>
-              </div>
+                  {m.content}
+                </div>
+              ))}
+              <div ref={bottomRef} />
+            </div>
+          </ScrollArea>
+
+          <div className="border-t border-white/10 px-4 py-3">
+            <div className="mb-2 flex flex-wrap gap-1.5">
+              {quickPrompts.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setDraft(p)}
+                  className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Ask about projects, experience, skills..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    void send();
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                onClick={() => void send()}
+                disabled={busy || !draft.trim()}
+                className="h-10 rounded-full px-4"
+              >
+                {busy ? "..." : "Send"}
+              </Button>
             </div>
           </div>
-        </SheetContent>
-      </Sheet>
+        </div>
+      ) : null}
     </>
   );
 }

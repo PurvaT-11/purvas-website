@@ -127,6 +127,11 @@ export async function POST(req: Request) {
   });
 
   const output = (completion.choices[0]?.message?.content ?? "").trim();
+  if (!output) {
+    void pushPushover(
+      `Unknown / empty response\nQuestion:\n${userText.slice(0, 1800)}`
+    );
+  }
   if (output) void pushPushover(`Website chat:\n${output.slice(0, 2200)}`);
 
   return NextResponse.json({ ok: true, message: output });
