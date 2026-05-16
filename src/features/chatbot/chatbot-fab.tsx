@@ -38,14 +38,14 @@ export function ChatbotFab() {
   }, []);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, open]);
 
   const quickPrompts = useMemo(
     () => [
-      "Give me a 30-second walkthrough of your strongest project.",
-      "Summarize your backend experience in 5 bullets.",
-      "What kind of roles are you targeting right now?",
+      "Strongest project in 30 seconds",
+      "Backend experience in 5 bullets",
+      "Roles you're targeting",
     ],
     []
   );
@@ -69,7 +69,7 @@ export function ChatbotFab() {
       const data = (await res.json().catch(() => null)) as ApiOk | ApiErr | null;
 
       if (!res.ok || !data || data.ok === false) {
-        const err = (data && "error" in data && data.error) ? data.error : "Chat failed. Check OPENAI_API_KEY in .env.local.";
+        const err = data && "error" in data && data.error ? data.error : "Chat failed. Check OPENAI_API_KEY in .env.local.";
         setMessages((prev) => [
           ...prev,
           { role: "assistant", content: `Error: ${err}` },
@@ -103,54 +103,54 @@ export function ChatbotFab() {
       >
         Chat
       </Button>
+
       <Sheet open={open} onOpenChange={setOpen} modal="trap-focus">
-        <SheetContent side="right" className="w-[380px]">
-          <SheetHeader>
-            <SheetTitle>Chat</SheetTitle>
-          </SheetHeader>
-          <div className="mt-6 space-y-4 text-sm text-muted-foreground">
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                Try a prompt
-              </p>
-              <div className="flex flex-wrap gap-2">
+        <SheetContent
+          side="right"
+          className="w-[min(92vw,360px)] p-0 sm:w-[360px]"
+        >
+          <div className="flex h-full min-h-0 flex-col">
+            <SheetHeader className="border-b border-white/10 px-4 py-3 text-left">
+              <SheetTitle className="text-base">Chat with PurvaBot</SheetTitle>
+            </SheetHeader>
+
+            <ScrollArea className="min-h-0 flex-1 px-4 py-3">
+              <div className="space-y-3">
+                {messages.map((m, idx) => (
+                  <div
+                    key={idx}
+                    className={cn(
+                      "max-w-[88%] rounded-2xl px-3 py-2 text-sm leading-6",
+                      m.role === "user"
+                        ? "ml-auto bg-gradient-to-r from-fuchsia-500/25 via-indigo-500/20 to-sky-400/20 text-foreground border border-white/10"
+                        : "mr-auto bg-white/5 text-foreground/90 border border-white/10"
+                    )}
+                  >
+                    {m.content}
+                  </div>
+                ))}
+                <div ref={bottomRef} />
+              </div>
+            </ScrollArea>
+
+            <div className="border-t border-white/10 px-4 py-3">
+              <div className="mb-2 flex flex-wrap gap-1.5">
                 {quickPrompts.map((p) => (
                   <button
                     key={p}
                     onClick={() => setDraft(p)}
-                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {p}
                   </button>
                 ))}
               </div>
-            </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-              <ScrollArea className="h-[260px] pr-3">
-                <div className="space-y-3">
-                  {messages.map((m, idx) => (
-                    <div
-                      key={idx}
-                      className={cn(
-                        "max-w-[92%] rounded-2xl px-3 py-2 text-sm leading-6",
-                        m.role === "user"
-                          ? "ml-auto bg-gradient-to-r from-fuchsia-500/25 via-indigo-500/20 to-sky-400/20 text-foreground border border-white/10"
-                          : "mr-auto bg-white/5 text-muted-foreground border border-white/10"
-                      )}
-                    >
-                      {m.content}
-                    </div>
-                  ))}
-                  <div ref={bottomRef} />
-                </div>
-              </ScrollArea>
-
-              <div className="mt-3 flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Input
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Ask about projects, experience, or skills…"
+                  placeholder="Ask about projects, experience, skills..."
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
@@ -162,9 +162,9 @@ export function ChatbotFab() {
                   type="button"
                   onClick={() => void send()}
                   disabled={busy || !draft.trim()}
-                  className="rounded-full"
+                  className="h-10 rounded-full px-4"
                 >
-                  {busy ? "…" : "Send"}
+                  {busy ? "..." : "Send"}
                 </Button>
               </div>
             </div>
