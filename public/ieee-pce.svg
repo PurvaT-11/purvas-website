@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="160" viewBox="0 0 640 160">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f472b6" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#a78bfa" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="638" height="158" rx="22" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <rect x="28" y="54" width="52" height="52" rx="16" fill="url(#g)"/>
+  <path d="M54 64c-7 0-12 6-12 13s5 13 12 13 12-6 12-13-5-13-12-13Z" fill="rgba(0,0,0,0.25)"/>
+  <text x="100" y="86" fill="rgba(255,255,255,0.90)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-size="26" font-weight="650">
+    IEEE PCE
+  </text>
+  <text x="100" y="112" fill="rgba(255,255,255,0.55)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-size="14">
+    Replace this placeholder with the official logo when you have it.
+  </text>
+</svg>
+
