@@ -24,7 +24,7 @@ export function ChatbotFab() {
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<{ prompt?: string }>).detail;
-      if (detail?.prompt) setDraft(detail.prompt);
+      setDraft(detail?.prompt ?? "");
       setOpen(true);
     };
     window.addEventListener("chatbot:open", handler);
