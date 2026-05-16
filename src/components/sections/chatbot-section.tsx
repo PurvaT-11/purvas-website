@@ -11,6 +11,12 @@ function openChat(prompt?: string) {
   );
 }
 
+const samplePrompts = [
+  "Give me a 30-second intro to Purva and her strongest projects.",
+  "Summarize your backend experience in 5 bullets with measurable impact.",
+  "Which roles are you targeting and why?",
+];
+
 export function ChatbotSection() {
   return (
     <Section id="chatbot">
@@ -32,7 +38,7 @@ export function ChatbotSection() {
             <CardContent className="space-y-2 text-sm text-muted-foreground">
               <p>• Answer questions about my experience and projects</p>
               <p>• Give tailored project walkthroughs (hiring-manager style)</p>
-              <p>• Capture “unknown questions” so I can improve the site</p>
+              <p>• Capture out-of-scope / unknown questions for follow-up</p>
               <p>• Later: tool calling + RAG + long-term memory</p>
             </CardContent>
           </Card>
@@ -45,26 +51,24 @@ export function ChatbotSection() {
               <Button
                 type="button"
                 className="rounded-full"
-                onClick={() =>
-                  openChat(
-                    "Give me a 30-second intro to Purva and her strongest projects."
-                  )
-                }
+                onClick={() => openChat()}
               >
                 Open chat
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-full"
-                onClick={() =>
-                  openChat(
-                    "Summarize your backend experience in 5 bullets with measurable impact."
-                  )
-                }
-              >
-                Ask a sample question
-              </Button>
+              <p className="pt-2 text-xs text-muted-foreground">Sample questions</p>
+              <div className="flex flex-wrap gap-2">
+                {samplePrompts.map((prompt) => (
+                  <Button
+                    key={prompt}
+                    type="button"
+                    variant="outline"
+                    className="h-auto whitespace-normal rounded-full px-3 py-1 text-left text-xs"
+                    onClick={() => openChat(prompt)}
+                  >
+                    {prompt}
+                  </Button>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </div>
